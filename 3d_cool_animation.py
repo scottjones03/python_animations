@@ -24,11 +24,11 @@ class DrawAnimation:
         return np.random.random(4)
 
     def animation_func(self, i) -> None:
-        speed=1e-2
+        speed=0.5e-1
         width=500
         ani=width*(np.sin(speed*i))**3
-        resolution=max(10, int(i))
-        render=np.linspace(-ani, ani, resolution)
+        resolution=max(10, int(i/2))
+        render=np.linspace(-ani, ani, 20)
         func_=lambda x, y: np.sin((x**2+y**2)**(1/4))
         x, y = np.meshgrid(render, render)
         z=np.array([func_(px, py) for px, py in zip(x, y)])
