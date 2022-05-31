@@ -4,7 +4,7 @@ import manim
 from manim.animation.transform import ApplyFunction
 
 
-HEIGHT=10
+HEIGHT=20
 WIDTH=10
 class VectorArrow(manim.MovingCameraScene):
     
@@ -41,7 +41,7 @@ class VectorArrow(manim.MovingCameraScene):
         trajectory.add_updater(update_trajectory)
         return trajectory
 
-    def get_vector_field(self, change):
+    def get_vector_field_lines_and_func(self, change):
         def pendulum_vector_field_func(point):
             mu=0.1
             g=9.8
@@ -52,7 +52,12 @@ class VectorArrow(manim.MovingCameraScene):
                 -np.sqrt(g / L) * np.sin(theta+change) - mu * omega+np.random.rand(),
                 0,
             ])
-        return manim.ArrowVectorField(pendulum_vector_field_func, y_range=[-HEIGHT, HEIGHT]), pendulum_vector_field_func
+
+        return (
+            manim.ArrowVectorField(pendulum_vector_field_func, y_range=[-HEIGHT, HEIGHT]), 
+            manim.StreamLines(pendulum_vector_field_func, stroke_width=3, max_anchors_per_line=30),
+            pendulum_vector_field_func
+        )
         
 
     def construct_field(self) -> None:
@@ -86,16 +91,51 @@ class VectorArrow(manim.MovingCameraScene):
         # self.wait(1)
 
     def construct_stream_lines(self):
-        vector_field, func = self.get_vector_field(0)
-        stream_lines = manim.StreamLines(
-            func, stroke_width=3, max_anchors_per_line=30
-        )
+        vector_field, stream_lines, func = self.get_vector_field_lines_and_func(0)
+        
         self.add(stream_lines)
         self.add(vector_field)
         stream_lines.start_animation(warm_up=False, flow_speed=1.5)
         self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
         self.wait(10)
 
+    def construct_morphing_field(self):
+        changes=30
+        vector_field, stream_lines, _ = self.get_vector_field_lines_and_func(0)
+
+        field_group = manim.VGroup(vector_field, stream_lines)
+        self.add(field_group)
+        stream_lines.start_animation(warm_up=False, flow_speed=1.5)
+        for i in range(changes):
+            new_vf, new_sl, _ = self.get_vector_field_lines_and_func(i+1/20)
+            new_field_group = manim.VGroup(new_vf, new_sl)
+            stream_lines.end_animation()
+            self.play(field_group.animate.become(new_field_group))
+            stream_lines.start_animation(warm_up=False, flow_speed=1.5)
+            self.wait(0.1)
+
+    def construct_morphing_field2(self):
+        changes=5
+        vector_field, stream_lines, func = self.get_vector_field_lines_and_func(0)
+
+        field_group = manim.VGroup(vector_field, stream_lines)
+        self.add(field_group)
+        stream_lines.start_animation(warm_up=False, flow_speed=1.5)
+        for i in range(changes):
+            self.play(field_group.animate.rotate_about_origin(i))
+            self.wait(2)
+            
+    def construct_cool_stream_lines(self):
+        func = lambda pos: ((pos[0] * manim.UR + pos[1] * manim.LEFT) - pos) / 3
+        stream_lines=manim.StreamLines(func, stroke_width=3, max_anchors_per_line=30, y_range=[-HEIGHT, HEIGHT])
+        self.add(stream_lines)
+        vf=manim.ArrowVectorField(func, y_range=[-HEIGHT, HEIGHT])
+        self.add(vf)
+        stream_lines.start_animation(warm_up=False, flow_speed=1.5)
+        self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
+        self.wait(10)
+
+
     def construct(self):
         self.camera.frame.set(width=WIDTH, height=HEIGHT)
-        self.construct_stream_lines()
+        self.construct_cool_stream_lines()

@@ -6,4 +6,4 @@ import manim
 
 if __name__ == "__main__":
     # os.system(r"manim render -r 256,144")
-    os.system(r"manim -p  -r 720,720 ./manim_animations/vector_arrow.py VectorArrow")
+    os.system(r"manim -pql  -r 720,720 ./manim_animations/vector_arrow.py VectorArrow")
