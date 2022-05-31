@@ -8,7 +8,7 @@ if __name__ == "__main__":
     drawAnimation.set_theme()
     ani_ = animation.FuncAnimation(
         drawAnimation.fig,
-        drawAnimation.draw_rose_2d,
+        drawAnimation.draw_rose_3d_random,
         interval=100
     )
 

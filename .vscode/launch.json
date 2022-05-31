@@ -8,7 +8,7 @@
             "name": "Python: Module",
             "type": "python",
             "request": "launch",
-            "module": "parametrics",
+            "module": "manim_animations",
         }
     ]
 }
