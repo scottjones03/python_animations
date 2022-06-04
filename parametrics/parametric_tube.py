@@ -42,6 +42,37 @@ class TubeAnimation(DrawAnimation):
         self.ax.set_xlim(*LIMITS)
         self.ax.set_xlim(*LIMITS)
 
+    def animation_func_tube(self, i) -> None:
+        speed=1e-2
+        width=2
+        r=width*np.sin(i*speed)**2
+        theta=np.linspace(-np.pi, np.pi, 20)
+        us, vs = np.meshgrid(
+                theta,
+                r*theta,
+        )
+        
+        ring_radius=3*r
+        helix_radius=1*r
+        a = r
+
+        self.ax.clear()
+        self.set_theme()
+
+        x = helix_radius*vs + ring_radius*a*np.sin(us)/np.sqrt(ring_radius**2+helix_radius**2)
+        y = ring_radius*np.cos(vs) - np.cos(vs)*np.cos(us) + helix_radius*a*np.sin(vs)*np.sin(us)/np.sqrt(ring_radius**2+helix_radius**2)
+        z = ring_radius*np.sin(vs) - np.sin(vs)*np.cos(us) - helix_radius*a*np.cos(vs)*np.sin(us)/np.sqrt(ring_radius**2+helix_radius**2)
+
+        self.ax.plot_surface(z, y, x, cmap="viridis")
+
+        
+        
+        # self.ax.view_init(60, 35)
+        # self.ax.set_xlim(*LIMITS)
+        # self.ax.set_xlim(*LIMITS)
+        # self.ax.set_xlim(*LIMITS)
+
+
     def animation_func_surface(self, i) -> None:
         speed=1e-2
         width=50

@@ -5,9 +5,10 @@ from parametrics import DrawAnimation
 
 class DrawRose(DrawAnimation):
     def draw_rose_2d(self, i):
-        speed=1e-1
+        speed=1e-2
         a=float(np.sin(i*speed)*5+1)
-        b=float(np.cos(i*speed)*5+1)
+        # b=float(np.cos(i*speed)*5+1)
+        b=1
         theta = np.linspace(-np.pi, np.pi, 50)
         u, v = np.meshgrid(
             theta,

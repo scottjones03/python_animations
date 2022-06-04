@@ -4,11 +4,11 @@ from parametrics.parametric_tube import TubeAnimation
 
 
 if __name__ == "__main__":
-    drawAnimation = DrawRose()
+    drawAnimation = TubeAnimation()
     drawAnimation.set_theme()
     ani_ = animation.FuncAnimation(
         drawAnimation.fig,
-        drawAnimation.draw_rose_3d_random,
+        drawAnimation.animation_func_tube,
         interval=100
     )
 

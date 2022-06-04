@@ -125,12 +125,23 @@ class VectorArrow(manim.MovingCameraScene):
             self.play(field_group.animate.rotate_about_origin(i))
             self.wait(2)
             
+
+
+
+
+
+
+            
     def construct_cool_stream_lines(self):
         func = lambda pos: ((pos[0] * manim.UR + pos[1] * manim.LEFT) - pos) / 3
-        stream_lines=manim.StreamLines(func, stroke_width=3, max_anchors_per_line=30, y_range=[-HEIGHT, HEIGHT])
+        stream_lines=manim.StreamLines(
+            func, stroke_width=3, max_anchors_per_line=30, y_range=[-HEIGHT, HEIGHT]
+        )
         self.add(stream_lines)
+
         vf=manim.ArrowVectorField(func, y_range=[-HEIGHT, HEIGHT])
         self.add(vf)
+
         stream_lines.start_animation(warm_up=False, flow_speed=1.5)
         self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
         self.wait(10)
